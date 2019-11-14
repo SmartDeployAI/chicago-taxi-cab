@@ -31,8 +31,8 @@ images=(
 )
 
 COMMIT_SHA=$1
-FROM_GCR_PREFIX='gcr.io/sdai-pipeline-components-test/'
-TO_GCR_PREFIX='gcr.io/sdai-pipeline-components/'
+FROM_GCR_PREFIX='gcr.io/staging/sdai-pipeline-components/'
+TO_GCR_PREFIX='gcr.io/release/sdai-pipeline-components/'
 REPO=SmartDeployAI/chicago-taxi-cab
 PARENT_PATH=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
@@ -43,6 +43,7 @@ fi
 
 # Checking out the repo
 clone_dir=$(mktemp -d)
+echo clone_dir
 git clone "git@github.com:${REPO}.git" "$clone_dir"
 cd "$clone_dir"
 branch="release-$COMMIT_SHA"
@@ -56,7 +57,11 @@ do
     TARGET_IMAGE_BASE=${TO_GCR_PREFIX}${image}
     TARGET_IMAGE=${TARGET_IMAGE_BASE}:${COMMIT_SHA}
 
-#    gcloud container images add-tag --quiet ${FROM_GCR_PREFIX}${image}:${COMMIT_SHA} ${TARGET_IMAGE}
+    # Move image from test to prod GCR
+    gcloud container images add-tag --quiet \
+    ${FROM_GCR_PREFIX}${image}:${COMMIT_SHA} ${TARGET_IMAGE}
+
     # Update the code
-    find components -type f | while read file; do sed -i -e "s|${TARGET_IMAGE_BASE}:\([a-zA-Z0-9_.-]\)\+|${TARGET_IMAGE}|g" "$file"; done
+    find components samples -type f | while read file; do sed -i -e "s|${TARGET_IMAGE_BASE}:\([a-zA-Z0-9_.-]\)\+|${TARGET_IMAGE}|g" "$file"; done
 done
+
