@@ -5,6 +5,11 @@ steps:
     args:
       - -c
       - |
+
+        ls /
+        ls -a /workspace
+        cd components
+        
         echo "Building Pipeline Components Docker Images..."
         echo "---------------------------------------------"
         echo "1. Building Docker Component Base Image"
