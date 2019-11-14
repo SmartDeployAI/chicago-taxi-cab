@@ -8,6 +8,7 @@ steps:
 
         ls /
         ls -a /workspace
+        cd components
 
         echo "Build & Push Pipeline Components Docker Images..."
         echo "---------------------------------------------"
