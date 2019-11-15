@@ -139,46 +139,46 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
         output_path=os.path.join(output_dir, 'data_stats.tfrecord'),
         pipeline_options=pipeline_options)
     schema = tfdv.infer_schema(stats)
-    with open('/tmp/output_schema.pb2', 'w+') as f:
-        f.write(schema.SerializeToString())
-    with file_io.FileIO(os.path.join(output_dir, 'schema.pb2'), 'w+') as f:
-        logging.getLogger().info('Writing schema to {}'.format(f.name))
-        f.write(schema.SerializeToString())
-    schema_json = convert_schema_proto_to_json(
-        schema, column_names, key_columns)
-    with open('/tmp/output_schema.json', 'w+') as f:
-        json.dump(schema_json, f)
-    schema_json_file = os.path.join(output_dir, 'schema.json')
-    with file_io.FileIO(schema_json_file, 'w+') as f:
-        logging.getLogger().info('Writing JSON schema to {}'.format(f.name))
-        json.dump(schema_json, f)
-    with open('/tmp/schema.txt', 'w+') as f:
-        f.write(schema_json_file)
-
-    if not csv_data_file_to_validate:
-        return
-
-    validation_stats = tfdv.generate_statistics_from_csv(
-        data_location=csv_data_file_to_validate,
-        column_names=column_names,
-        delimiter=',',
-        output_path=os.path.join(output_dir, 'validation_data_stats.tfrecord'),
-        pipeline_options=pipeline_options)
-    anomalies = tfdv.validate_statistics(validation_stats, schema)
-    with open('/tmp/output_validation_result.txt', 'w+') as f:
-        if len(anomalies.anomaly_info.items()) > 0:
-            f.write('invalid')
-        else:
-            f.write('valid')
-            return
-
-    with file_io.FileIO(os.path.join(output_dir, 'anomalies.pb2'), 'w+') as f:
-        logging.getLogger().info('Writing anomalies to {}'.format(f.name))
-        f.write(anomalies.SerializeToString())
-    for feature_name, anomaly_info in anomalies.anomaly_info.items():
-        logging.getLogger().error(
-            'Anomaly in feature "{}": {}'.format(
-                feature_name, anomaly_info.description))
+    # with open('/tmp/output_schema.pb2', 'w+') as f:
+    #     f.write(schema.SerializeToString())
+    # with file_io.FileIO(os.path.join(output_dir, 'schema.pb2'), 'w+') as f:
+    #     logging.getLogger().info('Writing schema to {}'.format(f.name))
+    #     f.write(schema.SerializeToString())
+    # schema_json = convert_schema_proto_to_json(
+    #     schema, column_names, key_columns)
+    # with open('/tmp/output_schema.json', 'w+') as f:
+    #     json.dump(schema_json, f)
+    # schema_json_file = os.path.join(output_dir, 'schema.json')
+    # with file_io.FileIO(schema_json_file, 'w+') as f:
+    #     logging.getLogger().info('Writing JSON schema to {}'.format(f.name))
+    #     json.dump(schema_json, f)
+    # with open('/tmp/schema.txt', 'w+') as f:
+    #     f.write(schema_json_file)
+    #
+    # if not csv_data_file_to_validate:
+    #     return
+    #
+    # validation_stats = tfdv.generate_statistics_from_csv(
+    #     data_location=csv_data_file_to_validate,
+    #     column_names=column_names,
+    #     delimiter=',',
+    #     output_path=os.path.join(output_dir, 'validation_data_stats.tfrecord'),
+    #     pipeline_options=pipeline_options)
+    # anomalies = tfdv.validate_statistics(validation_stats, schema)
+    # with open('/tmp/output_validation_result.txt', 'w+') as f:
+    #     if len(anomalies.anomaly_info.items()) > 0:
+    #         f.write('invalid')
+    #     else:
+    #         f.write('valid')
+    #         return
+    #
+    # with file_io.FileIO(os.path.join(output_dir, 'anomalies.pb2'), 'w+') as f:
+    #     logging.getLogger().info('Writing anomalies to {}'.format(f.name))
+    #     f.write(anomalies.SerializeToString())
+    # for feature_name, anomaly_info in anomalies.anomaly_info.items():
+    #     logging.getLogger().error(
+    #         'Anomaly in feature "{}": {}'.format(
+    #             feature_name, anomaly_info.description))
 
 
 def main():
