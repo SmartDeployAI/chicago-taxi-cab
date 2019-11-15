@@ -17,6 +17,7 @@ steps:
         cd base
         mkdir - ./build
         docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:$COMMIT_SHA -f Dockerfile .
+        docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:latest -f Dockerfile .
         docker push gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:$COMMIT_SHA
         docker push gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:latest
         rm -rf ./build
