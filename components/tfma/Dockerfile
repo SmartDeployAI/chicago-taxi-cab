@@ -21,8 +21,8 @@ RUN apt-get update -y && \
     apt-get --purge autoremove -y build-essential
 
 WORKDIR /ml
-
-RUN mkdir /usr/licenses && \
-    /ml/license.sh /ml/third_party_licenses.csv /usr/licenses
+#
+#RUN mkdir /usr/licenses && \
+#    /ml/license.sh /ml/third_party_licenses.csv /usr/licenses
 
 ENTRYPOINT ["python", "/ml/model_analysis.py"]
