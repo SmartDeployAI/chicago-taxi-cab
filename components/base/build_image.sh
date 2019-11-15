@@ -20,5 +20,6 @@ rsync -arvp "../tft/src"/ ./build/
 rsync -arvp "../tfma/src"/ ./build/
 rsync -arvp "../predict/src"/ ./build/
 
-docker build -t ml-pipeline-dataflow-base .
+docker build -t gcr.io/sdai-pipeline-components/ml-pipeline-dataflow-base:dev .
+docker push  gcr.io/sdai-pipeline-components/ml-pipeline-dataflow-base:dev
 rm -rf ./build
