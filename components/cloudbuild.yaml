@@ -12,9 +12,17 @@ steps:
 
         echo "Building Pipeline Components Docker Images..."
         echo "---------------------------------------------"
+
         echo "1. Building Docker Component Base Image"
         cd base
         mkdir - ./build
         docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:$COMMIT_SHA -f Dockerfile .
+        docker push gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:$COMMIT_SHA
         rm -rf ./build
+        cd ..
+
+        echo "2. Building Docker Component TFDV"
+        cd tfdv
+        docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-tfdv:$COMMIT_SHA -f tfdv/Dockerfile .
+        docker push gcr.io/$PROJECT_ID/ml-pipeline-dataflow-tfdv:$COMMIT_SHA
         cd ..
