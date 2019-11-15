@@ -50,3 +50,8 @@ steps:
         docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-tf-predict:$COMMIT_SHA -f Dockerfile .
         docker push gcr.io/$PROJECT_ID/ml-pipeline-dataflow-tf-predict:$COMMIT_SHA
         cd ..
+
+options:
+  machineType: 'N1_HIGHCPU_8'
+
+timeout: 2400s
