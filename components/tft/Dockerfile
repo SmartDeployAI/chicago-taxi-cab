@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ml-pipeline-dataflow-base
+FROM gcr.io/sdai-pipeline-components/ml-pipeline-dataflow-base
 
 ENTRYPOINT ["python", "/ml/transform.py"]
