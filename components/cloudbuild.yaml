@@ -13,4 +13,8 @@ steps:
         echo "Building Pipeline Components Docker Images..."
         echo "---------------------------------------------"
         echo "1. Building Docker Component Base Image"
-        docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:$COMMIT_SHA -f base/Dockerfile .
+        cd base
+        mkdir - ./build
+        docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:$COMMIT_SHA -f Dockerfile .
+        rm -rf ./build
+        cd ..
