@@ -16,6 +16,10 @@ steps:
         echo "1. Building & Push Docker Component Base Image"
         cd base
         mkdir - ./build
+        rsync -arvp "../tfdv/src"/ ./build/
+        rsync -arvp "../tft/src"/ ./build/
+        rsync -arvp "../tfma/src"/ ./build/
+        rsync -arvp "../predict/src"/ ./build/
         docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:$COMMIT_SHA -f Dockerfile .
         docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:latest -f Dockerfile .
         docker push gcr.io/$PROJECT_ID/ml-pipeline-dataflow-base:$COMMIT_SHA
