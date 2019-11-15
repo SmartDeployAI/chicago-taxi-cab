@@ -23,6 +23,6 @@ steps:
 
         echo "2. Building Docker Component TFDV"
         cd tfdv
-        docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-tfdv:$COMMIT_SHA -f tfdv/Dockerfile .
+        docker build -t gcr.io/$PROJECT_ID/ml-pipeline-dataflow-tfdv:$COMMIT_SHA -f Dockerfile .
         docker push gcr.io/$PROJECT_ID/ml-pipeline-dataflow-tfdv:$COMMIT_SHA
         cd ..
