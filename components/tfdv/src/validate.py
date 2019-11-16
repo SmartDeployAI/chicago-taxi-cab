@@ -116,8 +116,10 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
       mode: whether the job should be `local` or `cloud`.
     """
     if mode == 'local':
+        logging.getLogger().info('running in local mode')
         pipeline_options = None
     elif mode == 'cloud':
+        logging.getLogger().info('running in local mode')
         temp_dir = os.path.join(output_dir, 'tmp')
         options = {
             'job_name': (
@@ -132,6 +134,7 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
     else:
         raise ValueError("Invalid mode %s." % mode)
 
+    logging.getLogger().info('starting stats on tfdv')
     stats = tfdv.generate_statistics_from_csv(
         data_location=csv_data_file,
         column_names=column_names,
@@ -139,13 +142,20 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
         output_path=os.path.join(output_dir, 'data_stats.tfrecord'),
         pipeline_options=pipeline_options)
     schema = tfdv.infer_schema(stats)
+
+    logging.getLogger().info(' writing /tmp/output_schema.pb2')
     with open('/tmp/output_schema.pb2', 'w+') as f:
         f.write(schema.SerializeToString())
+
+    logging.getLogger().info(' writing [output_dir] schema.pb2')
     with file_io.FileIO(os.path.join(output_dir, 'schema.pb2'), 'w+') as f:
         logging.getLogger().info('Writing schema to {}'.format(f.name))
         f.write(schema.SerializeToString())
+
     schema_json = convert_schema_proto_to_json(
         schema, column_names, key_columns)
+
+    logging.getLogger().info(' writing /tmp/output_schema.json')
     with open('/tmp/output_schema.json', 'w+') as f:
         json.dump(schema_json, f)
     schema_json_file = os.path.join(output_dir, 'schema.json')
@@ -194,6 +204,7 @@ def main():
         column_names = json.loads(
             file_io.read_file_to_string(args.column_names))
 
+    logging.getLogger().info('starting validator ...')
     run_validator(args.output, column_names,
                   args.key_columns.split(','),
                   args.csv_data_for_inference,
