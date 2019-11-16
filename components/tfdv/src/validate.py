@@ -78,9 +78,9 @@ def convert_feature_to_json(feature, key_columns):
         feature_json['type'] = 'CATEGORY'
     elif feature_type == 'BYTES':
         if (feature.HasField('domain') or
-            feature.HasField('string_domain') or
-            (feature.HasField('distribution_constraints') and
-             feature.distribution_constraints.min_domain_mass > 0.95)):
+                feature.HasField('string_domain') or
+                (feature.HasField('distribution_constraints') and
+                 feature.distribution_constraints.min_domain_mass > 0.95)):
             feature_json['type'] = 'CATEGORY'
         else:
             feature_json['type'] = 'TEXT'
@@ -123,8 +123,8 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
         temp_dir = os.path.join(output_dir, 'tmp')
         options = {
             'job_name': (
-                'pipeline-tfdv-' +
-                datetime.datetime.now().strftime('%y%m%d-%H%M%S')),
+                    'pipeline-tfdv-' +
+                    datetime.datetime.now().strftime('%y%m%d-%H%M%S')),
             'setup_file': './validation/setup.py',
             'project': project,
             'temp_location': temp_dir,
@@ -143,36 +143,38 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
         pipeline_options=pipeline_options)
     schema = tfdv.infer_schema(stats)
 
-    logging.getLogger().info(' writing /tmp/output_schema.pb2')
-    with open('%s/output_schema.pb2' % output_dir, 'w+') as f:
+    logging.getLogger().info('loading output_schema.pb2')
+    with open('{}/output_schema.pb2'.format(output_dir), 'w+') as f:
         f.write(schema.SerializeToString())
 
-    logging.getLogger().info(' writing [output_dir] schema.pb2')
+    logging.getLogger().info('loading [output_dir] {} schema.pb2'.format(output_dir))
     with file_io.FileIO(os.path.join(output_dir, 'schema.pb2'), 'w+') as f:
-        logging.getLogger().info('Writing schema to {}'.format(f.name))
+        logging.getLogger().info('loading schema to {}'.format(f.name))
         f.write(schema.SerializeToString())
 
     schema_json = convert_schema_proto_to_json(
         schema, column_names, key_columns)
 
-    logging.getLogger().info(' writing /tmp/output_schema.json')
-    with open('%s/output_schema.json' % output_dir, 'w+') as f:
+    logging.getLogger().info(' logging output_schema.json')
+    with open('{}/output_schema.json'.format(output_dir), 'w+') as f:
         json.dump(schema_json, f)
     schema_json_file = os.path.join(output_dir, 'schema.json')
+
     with file_io.FileIO(schema_json_file, 'w+') as f:
-        logging.getLogger().info('Writing JSON schema to {}'.format(f.name))
+        logging.getLogger().info('logging JSON schema to {}'.format(f.name))
         json.dump(schema_json, f)
-    with open('%s/schema.txt' % output_dir, 'w+') as f:
-        f.write(schema_json_file)
+
+    with open('{}/schema.txt'.format(output_dir), 'w+') as f:
+        logging.getLogger().info('schema.txt to {}'.format(f.name))
+        f.write(schema_json_file+'\n')
+
+    logging.getLogger().info('Schema Write Done...')
 
     if not csv_data_file_to_validate:
+        logging.getLogger().info('No csv file to validate')
         return
 
-    import time
-    print("Start : %s" % time.ctime())
-    time.sleep(5000)
-    print("End : %s" % time.ctime())
-
+    logging.getLogger().info('Validation Stats...')
     validation_stats = tfdv.generate_statistics_from_csv(
         data_location=csv_data_file_to_validate,
         column_names=column_names,
@@ -180,15 +182,18 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
         output_path=os.path.join(output_dir, 'validation_data_stats.tfrecord'),
         pipeline_options=pipeline_options)
     anomalies = tfdv.validate_statistics(validation_stats, schema)
-    with open('%s/output_validation_result.txt' % output_dir, 'w+') as f:
+
+    logging.getLogger().info('logging output validation results ...')
+    with open('{}/output_validation_result.txt'.format(output_dir), 'w+') as f:
         if len(anomalies.anomaly_info.items()) > 0:
             f.write('invalid')
         else:
             f.write('valid')
             return
 
+    logging.getLogger().info('logging anomalies result ...')
     with file_io.FileIO(os.path.join(output_dir, 'anomalies.pb2'), 'w+') as f:
-        logging.getLogger().info('Writing anomalies to {}'.format(f.name))
+        logging.getLogger().info('logging anomalies to {}'.format(f.name))
         f.write(anomalies.SerializeToString())
     for feature_name, anomaly_info in anomalies.anomaly_info.items():
         logging.getLogger().error(
