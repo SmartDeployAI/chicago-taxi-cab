@@ -166,7 +166,7 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
 
     with open('{}/schema.txt'.format(output_dir), 'w+') as f:
         logging.getLogger().info('schema.txt to {}'.format(f.name))
-        f.write(schema_json_file+'\n')
+        f.write(schema_json_file)
 
     logging.getLogger().info('Schema Write Done...')
 
