@@ -144,7 +144,7 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
     schema = tfdv.infer_schema(stats)
 
     logging.getLogger().info(' writing /tmp/output_schema.pb2')
-    with open('/tmp/output_schema.pb2', 'w+') as f:
+    with open('%s/output_schema.pb2' % output_dir, 'w+') as f:
         f.write(schema.SerializeToString())
 
     logging.getLogger().info(' writing [output_dir] schema.pb2')
@@ -156,13 +156,13 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
         schema, column_names, key_columns)
 
     logging.getLogger().info(' writing /tmp/output_schema.json')
-    with open('/tmp/output_schema.json', 'w+') as f:
+    with open('%s/output_schema.json' % output_dir, 'w+') as f:
         json.dump(schema_json, f)
     schema_json_file = os.path.join(output_dir, 'schema.json')
     with file_io.FileIO(schema_json_file, 'w+') as f:
         logging.getLogger().info('Writing JSON schema to {}'.format(f.name))
         json.dump(schema_json, f)
-    with open('/tmp/schema.txt', 'w+') as f:
+    with open('%s/schema.txt' % output_dir, 'w+') as f:
         f.write(schema_json_file)
 
     if not csv_data_file_to_validate:
@@ -180,7 +180,7 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
         output_path=os.path.join(output_dir, 'validation_data_stats.tfrecord'),
         pipeline_options=pipeline_options)
     anomalies = tfdv.validate_statistics(validation_stats, schema)
-    with open('/tmp/output_validation_result.txt', 'w+') as f:
+    with open('%s/output_validation_result.txt' % output_dir, 'w+') as f:
         if len(anomalies.anomaly_info.items()) > 0:
             f.write('invalid')
         else:

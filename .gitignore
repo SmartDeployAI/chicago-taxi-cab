@@ -1,1 +1,6 @@
 .idea
+/components/tfdv/data/column-names.json
+/components/tfdv/data/eval.csv
+/components/tfdv/data/preprocessing.py
+/components/tfdv/data/schema.json
+/components/tfdv/data/train.csv
