@@ -52,15 +52,6 @@ def parse_arguments():
         '--key-columns',
         type=str,
         help='Comma separated list of columns to treat as keys.')
-    parser.add_argument(
-        '--project',
-        type=str,
-        required=True,
-        help='The GCP project to run the dataflow job.')
-    parser.add_argument(
-        '--mode',
-        choices=['local', 'cloud'],
-        help='Whether to run the job locally or in Cloud Dataflow.')
 
     args = parser.parse_args()
     return args
@@ -101,7 +92,7 @@ def convert_schema_proto_to_json(schema, column_names, key_columns):
 
 
 def run_validator(output_dir, column_names, key_columns, csv_data_file,
-                  csv_data_file_to_validate, project, mode):
+                  csv_data_file_to_validate):
     """Writes a TFDV-generated schema.
     Args:
       output_dir: output folder
@@ -112,27 +103,9 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
       csv_data_file: name of the CSV file to analyze and generate a schema.
       csv_data_file_to_validate: name of a CSV file to validate
           against the schema.
-      project: the project to run dataflow in.
-      mode: whether the job should be `local` or `cloud`.
     """
-    if mode == 'local':
-        logging.getLogger().info('running in local mode')
-        pipeline_options = None
-    elif mode == 'cloud':
-        logging.getLogger().info('running in local mode')
-        temp_dir = os.path.join(output_dir, 'tmp')
-        options = {
-            'job_name': (
-                    'pipeline-tfdv-' +
-                    datetime.datetime.now().strftime('%y%m%d-%H%M%S')),
-            'setup_file': './validation/setup.py',
-            'project': project,
-            'temp_location': temp_dir,
-        }
-        pipeline_options = beam.pipeline.PipelineOptions(flags=[], **options)
-        pipeline_options.view_as(StandardOptions).runner = 'DataFlowRunner'
-    else:
-        raise ValueError("Invalid mode %s." % mode)
+    logging.getLogger().info('running in local mode')
+    pipeline_options = None
 
     logging.getLogger().info('starting stats on tfdv')
     stats = tfdv.generate_statistics_from_csv(
@@ -195,6 +168,7 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
     with file_io.FileIO(os.path.join(output_dir, 'anomalies.pb2'), 'w+') as f:
         logging.getLogger().info('logging anomalies to {}'.format(f.name))
         f.write(anomalies.SerializeToString())
+
     for feature_name, anomaly_info in anomalies.anomaly_info.items():
         logging.getLogger().error(
             'Anomaly in feature "{}": {}'.format(
@@ -214,11 +188,12 @@ def main():
     logging.getLogger().info('args.key_columns: {}'.format(args.key_columns))
     logging.getLogger().info('args.csv_data_for_inference: {}'.format(args.csv_data_for_inference))
     logging.getLogger().info('args.csv_data_to_validate: {}'.format(args.csv_data_to_validate))
-    # run_validator(args.output, column_names,
-    #               args.key_columns.split(','),
-    #               args.csv_data_for_inference,
-    #               args.csv_data_to_validate,
-    #               args.project, args.mode)
+
+    run_validator(args.output,
+                  column_names,
+                  args.key_columns.split(','),
+                  args.csv_data_for_inference,
+                  args.csv_data_to_validate)
 
 
 if __name__ == "__main__":
