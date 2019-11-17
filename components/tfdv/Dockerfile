@@ -56,13 +56,13 @@ RUN pip install absl-py==0.3.0 \
         requests==2.19.1 \
         rsa==3.4.2 \
         six==1.11.0 \
-        protobuf>=3.7.0,<3.8.0,
-        tensorflow>=1.13.1,
-        tensorflow-data-validation>=0.13.1,<0.14,
-        tensorflow-metadata>=0.13.0,<0.14,
-        tensorflow-model-analysis>=0.13.2,<0.14,
-        tensorflow-serving-api>=1.13.0,<1.14,
-        tensorflow-transform>=0.13.0,<0.14,
+        protobuf==3.7.0 \
+        tensorflow>=1.13.1 \
+        tensorflow-data-validation==0.13.1 \
+        tensorflow-metadata==0.13.0 \
+        tensorflow-model-analysis==0.13.2 \
+        tensorflow-serving-api==1.13.0 \
+        tensorflow-transform==0.13.0 \
         termcolor==1.1.0 \
         typing==3.6.4 \
         urllib3==1.23 \
