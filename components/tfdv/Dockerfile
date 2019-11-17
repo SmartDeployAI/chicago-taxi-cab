@@ -48,7 +48,6 @@ RUN pip install absl-py==0.3.0 \
         ply==3.8 \
         proto-google-cloud-datastore-v1==0.90.4 \
         proto-google-cloud-pubsub-v1==0.15.4 \
-        protobuf==3.6.0 \
         pyasn1==0.4.4 \
         pyasn1-modules==0.2.2 \
         pytz==2018.5 \
@@ -57,10 +56,13 @@ RUN pip install absl-py==0.3.0 \
         requests==2.19.1 \
         rsa==3.4.2 \
         six==1.11.0 \
-        tensorboard==1.6.0 \
-        tensorflow==1.6.0 \
-        tensorflow-transform==0.6.0 \
-        tensorflow-data-validation==0.15.0 \
+        protobuf>=3.7.0,<3.8.0,
+        tensorflow>=1.13.1,
+        tensorflow-data-validation>=0.13.1,<0.14,
+        tensorflow-metadata>=0.13.0,<0.14,
+        tensorflow-model-analysis>=0.13.2,<0.14,
+        tensorflow-serving-api>=1.13.0,<1.14,
+        tensorflow-transform>=0.13.0,<0.14,
         termcolor==1.1.0 \
         typing==3.6.4 \
         urllib3==1.23 \
