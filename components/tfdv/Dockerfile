@@ -59,7 +59,7 @@ RUN pip install absl-py==0.3.0 \
         six==1.11.0 \
         tensorboard==1.6.0 \
         tensorflow==1.12.0\
-        tensorflow-data-validation==1.9.0\
+        tensorflow-data-validation==0.13.1\
         tensorflow-transform==0.6.0 \
         termcolor==1.1.0 \
         typing==3.6.4 \
