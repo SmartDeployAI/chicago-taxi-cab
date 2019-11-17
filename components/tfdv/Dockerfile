@@ -101,10 +101,4 @@ RUN apt-get update -y && \
     apt-get --purge autoremove -y build-essential
 
 WORKDIR /ml
-
-#ADD data /ml
-
-#RUN mkdir /usr/licenses && \
-#    /ml/license.sh /ml/third_party_licenses.csv /usr/licenses
-
-ENTRYPOINT ["python", "/ml/validate.py"]
+#ENTRYPOINT ["python", "/ml/validate.py"]
