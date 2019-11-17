@@ -210,11 +210,15 @@ def main():
             file_io.read_file_to_string(args.column_names))
 
     logging.getLogger().info('starting validator ...')
-    run_validator(args.output, column_names,
-                  args.key_columns.split(','),
-                  args.csv_data_for_inference,
-                  args.csv_data_to_validate,
-                  args.project, args.mode)
+    logging.getLogger().info('args.output: {}'.format(args.output))
+    logging.getLogger().info('args.key_columns: {}'.format(args.key_columns))
+    logging.getLogger().info('args.csv_data_for_inference: {}'.format(args.csv_data_for_inference))
+    logging.getLogger().info('args.csv_data_to_validate: {}'.format(args.csv_data_to_validate))
+    # run_validator(args.output, column_names,
+    #               args.key_columns.split(','),
+    #               args.csv_data_for_inference,
+    #               args.csv_data_to_validate,
+    #               args.project, args.mode)
 
 
 if __name__ == "__main__":

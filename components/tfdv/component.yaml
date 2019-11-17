@@ -30,5 +30,5 @@ implementation:
       --output,                 {inputValue: Validation output},
     ]
     fileOutputs:
-      Schema: /output/schema.txt
-      Validation result: /output/output_validation_result.txt
+      Schema: /schema.txt
+      Validation result: /output_validation_result.txt
