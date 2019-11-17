@@ -177,24 +177,23 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
 
 def main():
     logging.getLogger().setLevel(logging.INFO)
-    print("Hello World - Validation")
     args = parse_arguments()
-    # column_names = None
-    # if args.column_names:
-    #     column_names = json.loads(
-    #         file_io.read_file_to_string(args.column_names))
-    #
-    # logging.getLogger().info('starting validator ...')
-    # logging.getLogger().info('args.output: {}'.format(args.output))
-    # logging.getLogger().info('args.key_columns: {}'.format(args.key_columns))
-    # logging.getLogger().info('args.csv_data_for_inference: {}'.format(args.csv_data_for_inference))
-    # logging.getLogger().info('args.csv_data_to_validate: {}'.format(args.csv_data_to_validate))
-    #
-    # run_validator(args.output,
-    #               column_names,
-    #               args.key_columns.split(','),
-    #               args.csv_data_for_inference,
-    #               args.csv_data_to_validate)
+    column_names = None
+    if args.column_names:
+        column_names = json.loads(
+            file_io.read_file_to_string(args.column_names))
+
+    logging.getLogger().info('starting validator ...')
+    logging.getLogger().info('args.output: {}'.format(args.output))
+    logging.getLogger().info('args.key_columns: {}'.format(args.key_columns))
+    logging.getLogger().info('args.csv_data_for_inference: {}'.format(args.csv_data_for_inference))
+    logging.getLogger().info('args.csv_data_to_validate: {}'.format(args.csv_data_to_validate))
+
+    run_validator(args.output,
+                  column_names,
+                  args.key_columns.split(','),
+                  args.csv_data_for_inference,
+                  args.csv_data_to_validate)
 
 
 if __name__ == "__main__":

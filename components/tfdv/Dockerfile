@@ -59,8 +59,8 @@ RUN pip install absl-py==0.3.0 \
         six==1.11.0 \
         tensorboard==1.6.0 \
         tensorflow==1.6.0 \
-        tensorflow-transform==0.6.0 \
-        tensorflow-data-validation==0.9.0 \
+        tensorflow-transform==0.11.0 \
+        tensorflow-data-validation==0.11.0 \
         tensorflow-metadata==0.9.0 \
         termcolor==1.1.0 \
         typing==3.6.4 \
@@ -80,7 +80,7 @@ RUN wget -nv https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.zip && \
 
 ADD src /ml
 
-ADD data /data
+#ADD data /data
 
 ENV PATH $PATH:/tools/node/bin:/tools/google-cloud-sdk/bin
 
