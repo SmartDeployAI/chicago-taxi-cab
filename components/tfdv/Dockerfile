@@ -48,6 +48,7 @@ RUN pip install absl-py==0.3.0 \
         ply==3.8 \
         proto-google-cloud-datastore-v1==0.90.4 \
         proto-google-cloud-pubsub-v1==0.15.4 \
+        protobuf==3.6.0 \
         pyasn1==0.4.4 \
         pyasn1-modules==0.2.2 \
         pytz==2018.5 \
@@ -56,19 +57,15 @@ RUN pip install absl-py==0.3.0 \
         requests==2.19.1 \
         rsa==3.4.2 \
         six==1.11.0 \
-        protobuf==3.7.0 \
-        tensorflow>=1.13.1 \
-        tensorflow-data-validation==0.13.1 \
-        tensorflow-metadata==0.13.0 \
-        tensorflow-model-analysis==0.13.2 \
-        tensorflow-serving-api==1.13.0 \
-        tensorflow-transform==0.13.0 \
+        tensorboard==1.6.0 \
+        tensorflow==1.6.0 \
+        tensorflow-transform==0.6.0 \
+        tensorflow-data-validation==0.9.0 \
+        tensorflow-metadata==0.9.0 \
         termcolor==1.1.0 \
         typing==3.6.4 \
         urllib3==1.23 \
-        Werkzeug==0.14.1 \
-        pandas==0.24.1 \
-        gcsfs
+        Werkzeug==0.14.1
 
 RUN wget -nv https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.zip && \
     unzip -qq google-cloud-sdk.zip -d tools && \
@@ -83,4 +80,10 @@ RUN wget -nv https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.zip && \
 
 ADD src /ml
 
+ADD data /data
+
 ENV PATH $PATH:/tools/node/bin:/tools/google-cloud-sdk/bin
+
+WORKDIR /ml
+
+ENTRYPOINT ["python", "/ml/validate.py"]
