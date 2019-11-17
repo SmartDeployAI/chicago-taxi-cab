@@ -164,15 +164,16 @@ def run_validator(output_dir, column_names, key_columns, csv_data_file,
             f.write('valid')
             return
 
-    logging.getLogger().info('logging anomalies result ...')
-    with file_io.FileIO(os.path.join(output_dir, 'anomalies.pb2'), 'w+') as f:
-        logging.getLogger().info('logging anomalies to {}'.format(f.name))
-        f.write(anomalies.SerializeToString())
-
-    for feature_name, anomaly_info in anomalies.anomaly_info.items():
-        logging.getLogger().error(
-            'Anomaly in feature "{}": {}'.format(
-                feature_name, anomaly_info.description))
+    # logging.getLogger().info('logging anomalies result ...')
+    # with file_io.FileIO(os.path.join(output_dir, 'anomalies.pb2'), 'w+') as f:
+    #     logging.getLogger().info('logging anomalies to {}'.format(f.name))
+    #     f.write(anomalies.SerializeToString())
+    #
+    # for feature_name, anomaly_info in anomalies.anomaly_info.items():
+    #     logging.getLogger().error(
+    #         'Anomaly in feature "{}": {}'.format(
+    #             feature_name, anomaly_info.description))
+    return 0
 
 
 def main():
