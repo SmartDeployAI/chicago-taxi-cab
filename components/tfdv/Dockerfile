@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM gcr.io/sdai-pipeline-components/ml-pipeline-dataflow-base
+FROM gcr.io/sdai-pipeline-components/ml-pipeline-dataflow-base:latest
 
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y -q build-essential && \
